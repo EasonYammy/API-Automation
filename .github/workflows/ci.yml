@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    runs-on: self-hosted  # 使用你本地的 Windows 电脑
+    runs-on: self-hosted  
     permissions:
       contents: write
 
@@ -15,26 +15,25 @@ jobs:
       - name: 1. 拉取代码
         uses: actions/checkout@v4
 
-      # 因为 Windows 环境已经有 Python 了，我们不需要 setup-python，直接用本地环境
-      # 但如果怕污染本地环境，可以保留 setup-python，这里为了简单，直接跑
+
 
       - name: 2. 安装依赖
-        shell: powershell  # 强制使用 PowerShell 执行
+        shell: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
         run: |
           python -m pip install --upgrade pip
           pip install pytest requests pyyaml allure-pytest
 
       - name: 3. 运行测试
-        shell: powershell
+        shell: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
         env:
           BASE_URL: ${{ secrets.BASE_URL }}
           TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
-          PYTHONIOENCODING: utf-8 # 强制解决中文乱码
+          PYTHONIOENCODING: utf-8
         run: |
           pytest --alluredir=./allure-results
 
-      # 🚨 注意：因为是 Windows，我们需要用本地安装的 Allure 命令行，不能用那个 action
+      
       - name: 4. 生成 Allure 报告
         shell: cmd
         if: always()

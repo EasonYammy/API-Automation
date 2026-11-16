@@ -39,7 +39,8 @@ jobs:
         shell: cmd
         if: always()
         run: |
-          C:\Users\admin\Downloads\allure-commandline-2.46.1\allure-2.46.1\bin\allure.bat
+          "C:\Users\admin\Downloads\allure-commandline-2.46.1\allure-2.46.1\bin\allure.bat" generate ./allure-results -o ./allure-history --clean
+          
 
       - name: 5. 发布报告到 GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

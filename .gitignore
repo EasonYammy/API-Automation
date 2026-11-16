@@ -1,0 +1,14 @@
+# 忽略测试生成的报告和缓存
+result/
+.result/
+allure-report/
+allure-results/
+
+# 忽略 Python 缓存
+__pycache__/
+*.py[cod]
+
+# 忽略本地环境配置
+.vscode/
+.idea/
+.DS_Store

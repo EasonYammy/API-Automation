@@ -3,51 +3,49 @@ name: API Test & Allure Report
 on:
   push:
     branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
-  workflow_dispatch: # 允许手动触发
+  workflow_dispatch:
 
 jobs:
   test:
-    runs-on: self-hosted
+    runs-on: self-hosted  # 使用你本地的 Windows 电脑
     permissions:
-      contents: write # 需要写权限来发布 Allure 报告到 gh-pages
+      contents: write
 
     steps:
       - name: 1. 拉取代码
         uses: actions/checkout@v4
 
-      - name: 2. 设置 Python 环境
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
+      # 因为 Windows 环境已经有 Python 了，我们不需要 setup-python，直接用本地环境
+      # 但如果怕污染本地环境，可以保留 setup-python，这里为了简单，直接跑
 
-      - name: 3. 安装依赖
+      - name: 2. 安装依赖
+        shell: powershell  # 强制使用 PowerShell 执行
         run: |
           python -m pip install --upgrade pip
           pip install pytest requests pyyaml allure-pytest
 
-      - name: 4. 运行测试并生成 Allure 结果
+      - name: 3. 运行测试
+        shell: powershell
         env:
-          # 把 Secrets 注入到环境变量中
           BASE_URL: ${{ secrets.BASE_URL }}
           TEST_USERNAME: ${{ secrets.TEST_USERNAME }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+          PYTHONIOENCODING: utf-8 # 强制解决中文乱码
         run: |
           pytest --alluredir=./allure-results
 
-      - name: 5. 生成 Allure 报告
-        uses: simple-elf/allure-report-action@v1.15
-        if: always() # 即使测试失败，也生成报告
-        with:
-          allure_results: allure-results
-          allure_history: allure-history
-          gh_pages: gh-pages
+      # 🚨 注意：因为是 Windows，我们需要用本地安装的 Allure 命令行，不能用那个 action
+      - name: 4. 生成 Allure 报告
+        shell: powershell
+        if: always()
+        run: |
+          # 假设你本地已经安装了 allure 并且在环境变量里
+          allure generate ./allure-results -o ./allure-history --clean
 
-      - name: 6. 发布报告到 GitHub Pages
+      - name: 5. 发布报告到 GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         if: always()
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_branch: gh-pages
-          publish_dir: allure-history
+          publish_dir: ./allure-history

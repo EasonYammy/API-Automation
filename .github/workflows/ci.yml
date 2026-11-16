@@ -36,11 +36,11 @@ jobs:
 
       # 🚨 注意：因为是 Windows，我们需要用本地安装的 Allure 命令行，不能用那个 action
       - name: 4. 生成 Allure 报告
-        shell: powershell
+        shell: cmd
         if: always()
         run: |
           # 假设你本地已经安装了 allure 并且在环境变量里
-          allure generate ./allure-results -o ./allure-history --clean
+          C:\Users\admin\Downloads\allure-commandline-2.46.1\allure-2.46.1\bin\allure.bat
 
       - name: 5. 发布报告到 GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

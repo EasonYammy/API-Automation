@@ -30,6 +30,7 @@ def test_account(pytestconfig):
 
 @pytest.fixture(scope="session")
 def auth_token(base_url,test_account):
+    print(f"\n🚀 云端 Runner 正在尝试连接: {base_url}")
     print("\n正在自动登录获取最新的token...")
     login_url=f"{ base_url}/api/dreame-auth/oauth/token"
 

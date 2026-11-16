@@ -9,7 +9,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: write # 需要写权限来发布 Allure 报告到 gh-pages
 

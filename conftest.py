@@ -14,14 +14,18 @@ def pytest_addoption(parser):
 @pytest.fixture(scope="session")
 def base_url(pytestconfig):    #pytestconfig是pytest内置的，专门用来读取pytest.ini里的配置
     """获取全局配置的base_url"""
-    return pytestconfig.getini("base_url")
+    return os.getenv("BASE_URL") or pytestconfig.getini("base_url")
 
 @pytest.fixture(scope="session")
 def test_account(pytestconfig):
     """获取全局配置的账号密码"""
+
+    username = os.getenv("TEST_USERNAME") or pytestconfig.getini("username")
+    password = os.getenv("TEST_PASSWORD") or pytestconfig.getini("password")
+
     return {
-        "username":pytestconfig.getini("username"),
-        "password":pytestconfig.getini("password")
+        "username": username,
+        "password": password
     }
 
 @pytest.fixture(scope="session")

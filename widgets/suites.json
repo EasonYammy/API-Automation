@@ -1,1 +1,1 @@
-{"total":0,"items":[]}
+{"total":2,"items":[{"uid":"c436a568a4b38c7d5d0f5f7e6680a4ad","name":"test_iot_category","statistic":{"failed":0,"broken":5,"skipped":0,"passed":0,"unknown":0,"total":5}},{"uid":"70c5c77c8941b967331c77849f541f93","name":"test_iot_whitelist","statistic":{"failed":0,"broken":3,"skipped":0,"passed":0,"unknown":0,"total":3}}]}
